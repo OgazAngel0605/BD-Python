@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, request
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
-app = Flask(__name__, template_folder='.') # Indica que los HTML están en la raíz
+app = Flask(__name__, template_folder='.')
 
 @app.route('/')
 def inicio():
@@ -11,19 +11,15 @@ def inicio():
 
 @app.route('/<pagina>.html')
 def cargar_paginas(pagina):
-    # Si intentan cargar la base de datos de manera directa, los redirigimos a la función correcta
+
     if pagina == 'basedatos_AOOM':
         return redirect('/basedatos_AOOM.html')
     return render_template(f'{pagina}.html')
 
-# Conexión real a tu clúster de MongoDB Atlas
 MONGO_URI = "mongodb+srv://dentista_dentaglat_db_aoom:UuizaYbYcFT55lb6@dentistadentaglat.4fgdqmm.mongodb.net/?appName=DentistaDentaGlat"
 client = MongoClient(MONGO_URI)
-db = client['clinica_dental'] # Nombre de tu base de datos
+db = client['clinica_dental']
 
-# =================================================================
-# --- RUTAS PARA INSERTAR DATOS ---
-# =================================================================
 
 @app.route('/api/pacientes', methods=['POST'])
 def registrar_paciente():
@@ -87,15 +83,11 @@ def registrar_tratamiento():
     return redirect('/segtra_AOOM.html')
 
 
-# =================================================================
-# --- RUTA PARA MOSTRAR LAS TABLAS ACTUALIZADAS ---
-# =================================================================
-
 @app.route('/basedatos_AOOM.html')
 def ver_base_datos():
     lista_personal = []
     for doc in db['personal'].find():
-        doc['id'] = str(doc['_id']) # Transforma el ObjectId de Mongo a texto plano para el HTML
+        doc['id'] = str(doc['_id'])
         lista_personal.append(doc)
 
     lista_pacientes = []
@@ -120,10 +112,6 @@ def ver_base_datos():
                            tratamientos=lista_tratamientos)
 
 
-# =================================================================
-# --- RUTA PARA EDITAR / ACTUALIZAR UN REGISTRO (MONGODB) ---
-# =================================================================
-
 @app.route('/api/editar/<coleccion>/<id_doc>', methods=['POST'])
 def editar_registro(coleccion, id_doc):
     if coleccion in ['personal', 'pacientes', 'examenes', 'tratamientos']:
@@ -136,7 +124,6 @@ def editar_registro(coleccion, id_doc):
                 datos_actualizados[clave] = valor_limpio
         
         if datos_actualizados:
-            # En MongoDB usamos update_one con el operador $set y su ObjectId correspondiente
             db[coleccion].update_one(
                 {"_id": ObjectId(id_doc)}, 
                 {"$set": datos_actualizados}
@@ -144,10 +131,6 @@ def editar_registro(coleccion, id_doc):
         
     return redirect('/basedatos_AOOM.html')
 
-
-# =================================================================
-# --- RUTA PARA ELIMINAR UN REGISTRO (MONGODB) ---
-# =================================================================
 
 @app.route('/eliminar/<coleccion>/<id_doc>')
 def eliminar_registro(coleccion, id_doc):
