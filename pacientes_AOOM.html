@@ -146,42 +146,61 @@
 	</section>
 	</aside>
 
-	<form action = "/api/tratamientos" method = "POST">
-
+<form action = "/api/pacientes" method = "POST">
 	<article class="formu">
-	 <h1 class= "cen"> Formulario de Registro de Seguimientos y Tratamientos </h1>
-	 <p class= "cen"> Rellene los espacios vacíos con los datos del tratamiento a seguir para el paciente </p>
+	 <h1 class= "cen"> Formulario de Registro de Pacientes</h1>
+	 <p class= "cen"> Rellene los espacios vacíos con los datos del paciente </p>
 	</article>
   </div>
 <div class="formu">	
  <div class="labcen">
-  <label> Paciente: </label>
-  <input type="text" name="id_p" required>	
+  <label> ID del Paciente: </label>
+  <input type="text" name="id_paciente" required>	
  </div>
 
  <div class="labcen">
-  <label> Fecha Consulta: </label>
-  <input type="date" name="fecha_consulta" required>	
+  <label> Nombre: </label>
+  <input type="text" name="nombre_paciente" required>	
  </div>
 
  <div class="labcen">
-  <label> Diagnóstico: </label>
-  <input type="text" name="diagnostico" required>	
+  <label> Edad: </label>
+  <input type="number" name="edad_paciente" required>	
  </div>
 
  <div class="labcen">
-  <label> Tratamiento Realizado: </label>
-  <input type="text" name="tratamiento_realizado" required>	
+  <label> Género: </label>
+  <input type="text" name="genero_paciente" required>	
  </div>
 
  <div class="labcen">
-  <label> Materiales Utilizados: </label>
-  <input type="text" name="materiales_utilizados" required>	
+  <label> Fecha Registro: </label>
+  <input type="date" name="fecha_registro" required>	
  </div>
 
  <div class="labcen">
-  <label> Operador: </label>
-  <input type="text" name="operador" required>	
+  <label> Domicilio actual: </label>
+  <input type="text" name="dom_actual" required>	
+ </div>
+
+ <div class="labcen">
+  <label> Ocupación: </label>
+  <input type="text" name="ocupacion" required>	
+ </div>
+
+ <div class="labcen">
+  <label> Tutor: </label>
+  <input type="text" name="tutor" required>	
+ </div>
+
+ <div class="labcen">
+  <label> Teléfono: </label>
+  <input type="text" name="tel" required>	
+ </div>
+
+ <div class="labcen">
+  <label> Antecedentes/Notas: </label>
+  <input type="text" name="notas" required>	
  </div>
 
  <div class="bt">

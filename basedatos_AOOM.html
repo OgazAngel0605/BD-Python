@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Negocio Web AOOM </title>
+ <style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  header { 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(0, 110, 200);
+    padding: 30px;
+    text-align: center;
+    font-size: 35px;
+    color: white;
+  }
+
+  footer { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: rgb(0, 110, 200);
+    color: white;
+    font-size: 150%;
+    width: 100%;
+  }
+  
+  aside { 
+    display: flex;
+    background-color: rgb(0, 160, 230);
+    font-size: 130%;
+    float: left;
+    width: 20%;
+    min-height: 280vh;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  a { 
+    color: white;
+  }
+  
+  article { 
+    background-color: rgb(240, 240, 240); 
+    padding: 20px;
+  }
+
+  p { 
+    display: flex;
+    font-size: 110%;
+    align-items: stretch;
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .hola { 
+    display: flex;
+    flex-direction: column;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+    background-color: white;
+  }
+  th, td {
+    border: 1px solid #cccccc;
+    padding: 10px;
+    text-align: left;
+  }
+  th {
+    background-color: #006ec8;
+    color: white;
+  }
+  h2 {
+    color: #006ec8;
+    margin-top: 20px;
+    border-bottom: 2px solid #00a0e6;
+    padding-bottom: 5px;
+  }
+  /* Estilos para el Modal de Edición */
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 1000; 
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      justify-content: center; align-items: center;
+    }
+    .modal-contenido {
+      background-color: white;
+      padding: 25px;
+      border-radius: 8px;
+      width: 400px;
+      box-shadow: 0px 0px 15px rgba(0,0,0,0.3);
+    }
+    .modal-contenido h3 { margin-top: 0; color: rgb(0, 110, 200); }
+    .modal-contenido label { display: block; margin-top: 10px; font-weight: bold; }
+    .modal-contenido input { width: 100%; padding: 8px; margin-top: 5px; border: 1px solid #ccc; border-radius: 4px; }
+    .btn-guardar { background-color: #28a745; color: white; border: none; padding: 10px 15px; margin-top: 15px; cursor: pointer; border-radius: 4px; width: 100%; font-weight: bold;}
+    .btn-cancelar { background-color: #dc3545; color: white; border: none; padding: 8px 15px; margin-top: 5px; cursor: pointer; border-radius: 4px; width: 100%; }
+ </style>
+</head>
+
+<body>
+  <div>
+    <header>
+    <img src="/static/dentistadentaglat.png" alt="Logo" style="max-width: 100%;">
+    </header>
+
+	<aside>
+	<section>
+	<nav>
+	<ul>
+	 <li> <a href = "index.html#"> Inicio </a></li>
+	<br>
+	 <li> <a href = "servicio_AOOM.html#"> Servicios </a></li>
+	<br>
+	 <li> <a href = "especialistas_AOOM.html#"> Especialistas </a></li>
+	<br>
+	 <li> <a href = "ubicontacto_AOOM.html#"> Contacto y ubicación </a></li>
+	<br>
+	 <li> <a href = "basedatos_AOOM.html#"> Registro y Control Clínico </a></li>
+  <br>
+	 <li> <a href = "pacientes_AOOM.html#"> Pacientes </a></li>
+	<br>
+	 <li> <a href = "personal_AOOM.html#"> Personal </a></li>
+	<br>
+	 <li> <a href = "examenes_AOOM.html#"> Exámenes </a></li>
+	<br>
+	 <li> <a href = "segtra_AOOM.html#"> Seguimientos y Tratamientos </a></li>
+	</ul>
+	</nav>
+	</section>
+	</aside>
+
+  <article class="hola">
+      <h1 style="color: rgb(0, 110, 200); margin-left: 20px;">&nbsp; Registro y Control Clínico (Firebase Studio)</h1>
+      
+      <!-- 1. TABLA PERSONAL -->
+      <h2 style="margin-left: 20px; color: #333;">1. Personal de la Clínica</h2>
+      <div class="tabla-contenedor">
+        <table>
+          <tr>
+            <th>Nombre</th>
+            <th>Género</th>
+            <th>Edad</th>
+            <th>F. Nacimiento</th>
+            <th>Lugar Nacimiento</th>
+            <th>Cargo</th>
+            <th>Especialidad</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th>Acciones</th>
+          </tr>
+          {% for p in personal %}
+          <tr>
+            <td>{{ p.nombre_personal }}</td>
+            <td>{{ p.genero_personal }}</td>
+            <td>{{ p.edad_personal }}</td>
+            <td>{{ p.fecha_nacimiento }}</td>
+            <td>{{ p.lugar_nacimiento }}</td>
+            <td>{{ p.cargo }}</td>
+            <td>{{ p.especialidad }}</td>
+            <td>{{ p.tel_personal }}</td>
+            <td>{{ p.email }}</td>
+            <td>
+              <a href="/eliminar/personal/{{ p.id }}" style="color: #dc3545; font-weight: bold; text-decoration: none; margin-right: 12px;">Eliminar</a>
+              <a href="#" onclick="abrirEditarPersonal('{{ p.id }}', '{{ p.nombre_personal }}', '{{ p.genero_personal }}', '{{ p.edad_personal }}', '{{ p.fecha_nacimiento }}', '{{ p.lugar_nacimiento }}', '{{ p.cargo }}', '{{ p.especialidad }}', '{{ p.tel_personal }}', '{{ p.email }}')" style="color: #007bff; font-weight: bold; text-decoration: none;">Editar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+      <!-- 2. TABLA PACIENTES -->
+      <h2 style="margin-left: 20px; color: #333;">2. Control de Pacientes</h2>
+      <div class="tabla-contenedor">
+        <table>
+          <tr>
+            <th>ID Paciente</th>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Género</th>
+            <th>F. Registro</th>
+            <th>Domicilio</th>
+            <th>Ocupación</th>
+            <th>Tutor</th>
+            <th>Teléfono</th>
+            <th>Antecedentes/Notas</th>
+            <th>Acciones</th>
+          </tr>
+          {% for pac in pacientes %}
+          <tr>
+            <td>{{ pac.id_paciente }}</td>
+            <td>{{ pac.nombre_paciente }}</td>
+            <td>{{ pac.edad_paciente }}</td>
+            <td>{{ pac.genero_paciente }}</td>
+            <td>{{ pac.fecha_registro }}</td>
+            <td>{{ pac.dom_actual }}</td>
+            <td>{{ pac.ocupacion }}</td>
+            <td>{{ pac.tutor }}</td>
+            <td>{{ pac.tel }}</td>
+            <td>{{ pac.notas }}</td>
+            <td>
+              <a href="/eliminar/pacientes/{{ pac.id }}" style="color: #dc3545; font-weight: bold; text-decoration: none; margin-right: 12px;">Eliminar</a>
+              <a href="#" onclick="abrirEditarPaciente('{{ pac.id }}', '{{ pac.id_paciente }}', '{{ pac.nombre_paciente }}', '{{ pac.edad_paciente }}', '{{ pac.genero_paciente }}', '{{ pac.fecha_registro }}', '{{ pac.dom_actual }}', '{{ pac.ocupacion }}', '{{ pac.tutor }}', '{{ pac.tel }}', '{{ pac.notas }}')" style="color: #007bff; font-weight: bold; text-decoration: none;">Editar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+      <!-- 3. TABLA EXÁMENES -->
+      <h2 style="margin-left: 20px; color: #333;">3. Exámenes Clínicos</h2>
+      <div class="tabla-contenedor">
+        <table>
+          <tr>
+            <th>ID Paciente</th>
+            <th>Fecha y Hora</th>
+            <th>Motivo Consulta</th>
+            <th>Signos Vitales</th>
+            <th>Evaluación Odontológica</th>
+            <th>Examen Intra/Extraoral</th>
+            <th>Médico Evaluador</th>
+            <th>Estatus</th>
+            <th>Acciones</th>
+          </tr>
+          {% for ex in examenes %}
+          <tr>
+            <td>{{ ex.id_exa_paciente }}</td>
+            <td>{{ ex.fecha_hora }}</td>
+            <td>{{ ex.motivo_consulta }}</td>
+            <td>{{ ex.signos_vitales }}</td>
+            <td>{{ ex.evaluacion_odontologica }}</td>
+            <td>{{ ex.examen_intra_extra }}</td>
+            <td>{{ ex.med_evaluador }}</td>
+            <td>{{ ex.estatus }}</td>
+            <td>
+              <a href="/eliminar/examenes/{{ ex.id }}" style="color: #dc3545; font-weight: bold; text-decoration: none; margin-right: 12px;">Eliminar</a>
+              <a href="#" onclick="abrirEditarExamen('{{ ex.id }}', '{{ ex.id_exa_paciente }}', '{{ ex.fecha_hora }}', '{{ ex.motivo_consulta }}', '{{ ex.signos_vitales }}', '{{ ex.evaluacion_odontologica }}', '{{ ex.examen_intra_extra }}', '{{ ex.med_evaluador }}', '{{ ex.estatus }}')" style="color: #007bff; font-weight: bold; text-decoration: none;">Editar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+
+      <!-- 4. TABLA TRATAMIENTOS -->
+      <h2 style="margin-left: 20px; color: #333;">4. Seguimientos y Tratamientos</h2>
+      <div class="tabla-contenedor">
+        <table>
+          <tr>
+            <th>Paciente (ID)</th>
+            <th>Fecha Consulta</th>
+            <th>Diagnóstico</th>
+            <th>Tratamiento Realizado</th>
+            <th>Materiales Utilizados</th>
+            <th>Operador</th>
+            <th>Acciones</th>
+          </tr>
+          {% for t in tratamientos %}
+          <tr>
+            <td>{{ t.id_p }}</td>
+            <td>{{ t.fecha_consulta }}</td>
+            <td>{{ t.diagnostico }}</td>
+            <td>{{ t.tratamiento_realizado }}</td>
+            <td>{{ t.materiales_utilizados }}</td>
+            <td>{{ t.operador }}</td>
+            <td>
+              <a href="/eliminar/tratamientos/{{ t.id }}" style="color: #dc3545; font-weight: bold; text-decoration: none; margin-right: 12px;">Eliminar</a>
+              <a href="#" onclick="abrirEditarTratamiento('{{ t.id }}', '{{ t.id_p }}', '{{ t.fecha_consulta }}', '{{ t.diagnostico }}', '{{ t.tratamiento_realizado }}', '{{ t.materiales_utilizados }}', '{{ t.operador }}')" style="color: #007bff; font-weight: bold; text-decoration: none;">Editar</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+  </article>
+
+  <!-- ================================================================= -->
+  <!-- VENTANA EMERGENTE DE EDICIÓN DINÁMICA -->
+  <!-- ================================================================= -->
+<div id="miModalEditar" class="modal">
+    <div class="modal-contenido">
+      <h3 id="tituloModal">Editar Registro</h3>
+      <form id="formActualizar" method="POST" action="">
+        
+        <div id="camposDinamicos"></div>
+        
+        <button type="submit" class="btn-guardar">Guardar Cambios</button>
+        <button type="button" class="btn-cancelar" onclick="cerrarModal()">Cancelar</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ================================================================= -->
+  <!-- JAVASCRIPT CORREGIDO CON PARÁMETROS FIELMENTE ALINEADOS -->
+  <!-- ================================================================= -->
+  <script>
+    const modal = document.getElementById('miModalEditar');
+    // 🌟 Apuntamos al nuevo ID del formulario
+    const formActualizar = document.getElementById('formActualizar');
+    const tituloModal = document.getElementById('tituloModal');
+    const camposDinamicos = document.getElementById('camposDinamicos');
+
+    function abrirEditarPersonal(id, nombre, genero, edad, fechaNac, lugarNac, cargo, especialidad, tel, email) {
+      tituloModal.innerText = "Editar Personal de la Clínica";
+      formActualizar.setAttribute('action', "/api/editar/personal/" + id);
+      camposDinamicos.innerHTML = `
+        <label>Nombre:</label><input type="text" name="nombre_personal" value="${nombre}" required>
+        <label>Género:</label><input type="text" name="genero_personal" value="${genero}" required>
+        <label>Edad:</label><input type="number" name="edad_personal" value="${edad}" required>
+        <label>Fecha de Nacimiento:</label><input type="text" name="fecha_nacimiento" value="${fechaNac}" required>
+        <label>Lugar de Nacimiento:</label><input type="text" name="lugar_nacimiento" value="${lugarNac}" required>
+        <label>Cargo:</label><input type="text" name="cargo" value="${cargo}" required>
+        <label>Especialidad:</label><input type="text" name="especialidad" value="${especialidad}" required>
+        <label>Teléfono:</label><input type="text" name="tel_personal" value="${tel}" required>
+        <label>Email:</label><input type="text" name="email" value="${email}" required>
+      `;
+      modal.style.display = 'flex';
+    }
+
+    function abrirEditarPaciente(id, idPaciente, nombre, edad, genero, fechaReg, domicilio, ocupacion, tutor, tel, notas) {
+      tituloModal.innerText = "Editar Expediente de Paciente";
+      formActualizar.setAttribute('action', "/api/editar/pacientes/" + id);
+      camposDinamicos.innerHTML = `
+        <label>ID del Paciente:</label><input type="text" name="id_paciente" value="${idPaciente}" readonly style="background-color:#eee;">
+        <label>Nombre:</label><input type="text" name="nombre_paciente" value="${nombre}" required>
+        <label>Edad:</label><input type="number" name="edad_paciente" value="${edad}" required>
+        <label>Género:</label><input type="text" name="genero_paciente" value="${genero}" required>
+        <label>Fecha Registro:</label><input type="text" name="fecha_registro" value="${fechaReg}" required>
+        <label>Domicilio actual:</label><input type="text" name="dom_actual" value="${domicilio}" required>
+        <label>Ocupación:</label><input type="text" name="ocupacion" value="${ocupacion}" required>
+        <label>Tutor:</label><input type="text" name="tutor" value="${tutor}" required>
+        <label>Teléfono:</label><input type="text" name="tel" value="${tel}" required>
+        <label>Antecedentes/Notas:</label><input type="text" name="notas" value="${notas}" required>
+      `;
+      modal.style.display = 'flex';
+    }
+
+    function abrirEditarExamen(id, idExaPaciente, fechaHora, motivo, signos, evaluacion, examenIntraExtra, medico, estatus) {
+      tituloModal.innerText = "Editar Examen Clínico";
+      formActualizar.setAttribute('action', "/api/editar/examenes/" + id);
+      camposDinamicos.innerHTML = `
+        <label>ID Paciente:</label><input type="text" name="id_exa_paciente" value="${idExaPaciente}" readonly style="background-color:#eee;">
+        <label>Fecha y Hora:</label><input type="text" name="fecha_hora" value="${fechaHora}" required>
+        <label>Motivo de Consulta:</label><input type="text" name="motivo_consulta" value="${motivo}" required>
+        <label>Signos Vitales:</label><input type="text" name="signos_vitales" value="${signos}" required>
+        <label>Evaluación Odontológica:</label><input type="text" name="evaluacion_odontologica" value="${evaluacion}" required>
+        <label>Examen Intraoral / Extraoral:</label><input type="text" name="examen_intra_extra" value="${examenIntraExtra}" required>
+        <label>Médico Evaluador:</label><input type="text" name="med_evaluador" value="${medico}" required>
+        <label>Estatus:</label><input type="text" name="estatus" value="${estatus}" required>
+      `;
+      modal.style.display = 'flex';
+    }
+
+    function abrirEditarTratamiento(id, idp, fechaCons, diagnostico, tratamiento, materiales, operador) {
+      tituloModal.innerText = "Editar Tratamiento / Seguimiento";
+      formActualizar.setAttribute('action', "/api/editar/tratamientos/" + id);
+      camposDinamicos.innerHTML = `
+        <label>Paciente:</label><input type="text" name="id_p" value="${idp}" readonly style="background-color:#eee;">
+        <label>Fecha Consulta:</label><input type="text" name="fecha_consulta" value="${fechaCons}" required>
+        <label>Diagnóstico:</label><input type="text" name="diagnostico" value="${diagnostico}" required>
+        <label>Tratamiento Realizado:</label><input type="text" name="tratamiento_realizado" value="${tratamiento}" required>
+        <label>Materiales Utilizados:</label><input type="text" name="materiales_utilizados" value="${materiales}" required>
+        <label>Operador:</label><input type="text" name="operador" value="${operador}" required>
+      `;
+      modal.style.display = 'flex';
+    }
+
+    function cerrarModal() {
+      modal.style.display = 'none';
+    }
+  </script>
+    
+    <footer>
+      <h3> Ogaz Maravillo Angel Omar <br> 24308051280605 <br> 4°I <br> Programación </h3>
+    </footer>
+  </div>
+</body>
+</html>
