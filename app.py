@@ -3,14 +3,11 @@ from flask import Flask, render_template, request, redirect, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
-app = Flask(__name__, template_folder='.') # Indica que los HTML están en la raíz
+app = Flask(__name__, template_folder='.')
 
-# ⚠️ REEMPLAZA ESTA CADENA con tu URI real de MongoDB Atlas
 MONGO_URI = "mongodb+srv://<usuario>:<password>@cluster.xxxx.mongodb.net/?retryWrites=true&w=majority"
 client = MongoClient(MONGO_URI)
-db = client['clinica_dental'] # Nombre de tu base de datos
-
-# --- RUTAS PARA INSERTAR DATOS ---
+db = client['clinica_dental'] 
 
 @app.route('/api/pacientes', methods=['POST'])
 def registrar_paciente():
@@ -74,11 +71,10 @@ def registrar_tratamiento():
     return redirect('/basedatos_AOOM.html')
 
 
-# --- RUTA PRINCIPAL: MOSTRAR TABLAS DINÁMICAS ---
 
 @app.route('/basedatos_AOOM.html')
 def ver_base_datos():
-    # Traemos todos los documentos de cada colección en MongoDB
+
     lista_personal = list(db.personal.find())
     lista_pacientes = list(db.pacientes.find())
     lista_examenes = list(db.examenes.find())
@@ -91,7 +87,6 @@ def ver_base_datos():
                            tratamientos=lista_tratamientos)
 
 
-# --- RUTAS PARA ELIMINAR REGISTROS ---
 
 @app.route('/eliminar/<coleccion>/<id_doc>')
 def eliminar_registro(coleccion, id_doc):
